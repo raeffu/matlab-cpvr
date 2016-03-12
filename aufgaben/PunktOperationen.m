@@ -14,7 +14,7 @@ I = im2single(X);                   %Konvertierung in Mat. I mit floats (0-1)
 imshow(I);                          %Bild anzeigen
 title('Original');
 pause;
- 
+
 % fprintf ('\n\nBerechne Statistiken ...');
 % Imin = min(I(:));                   %Berechne Minimum
 % Imax = max(I(:));                   %Berechne Maximum
@@ -33,13 +33,30 @@ imshow(G);
 title('Graustufen Bild');
 pause;
 
-H = I + 0.5;
+fprintf ('\n\nHistogramm Bearbeitung ...');
+[H1,map] = gray2ind (G,256);         %Float Graustufen zu 256 Integer-Graustufen 
+imhist(H1);                          %Histogramm anzeigen
+title('Histogramm Graustufen');
+pause;
+
+H = G + 0.5;
 imshow(H);
 title('Helligkeit linear');
 pause;
 
 fprintf ('\n\nHistogramm Bearbeitung ...');
-[B,map] = gray2ind (I,256);         %Float Graustufen zu 256 Integer-Graustufen 
-imhist(B, map);                          %Histogramm anzeigen
-ti tle('Histogramm von Original');
+[H2,map] = gray2ind (H,256);         %Float Graustufen zu 256 Integer-Graustufen 
+imhist(H2);                          %Histogramm anzeigen
+title('Histogramm aufgehellt');
+pause;
+
+GammaValue = 1.0/2.2;
+GA = G.^ GammaValue;                %Gammakorrektur f?r Floats (0-1)
+imshow(GA);
+title('Nach Gammakorrektur mit Gamma 1/2.2');
+pause;
+
+[H2,map] = gray2ind(GA,256);
+imhist(H2);
+title('Histogrammausgleich nach Gammakorrektur');
 pause;
